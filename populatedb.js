@@ -18,7 +18,7 @@ const songs = []
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
-const mongoDB = process.env.MongoDB;
+const mongoDB = userArgs[0]
 
 main().catch((err) => console.log(err));
 
@@ -33,9 +33,6 @@ async function main() {
     mongoose.connection.close();
 }
 
-// We pass the index to the ...Create functions so that, for example,
-// genre[0] will always be the Fantasy genre, regardless of the order
-// in which the elements of promise.all's argument complete.
 
 async function artistsCreate(index, name) {
     const artist = new Artist({ name: name })

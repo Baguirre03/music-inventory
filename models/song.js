@@ -4,8 +4,8 @@ const Schema = mongoose.Schema
 
 const SongSchema = new Schema({
     name: { type: String, required: true },
-    artist: [{ type: Schema.Types.ObjectId, ref: "Artist" }],
-    genre: [{ type: Schema.Types.ObjectId, ref: "Genre" }],
+    artist: { type: Schema.Types.ObjectId, ref: "Artist" },
+    genre: { type: Schema.Types.ObjectId, ref: "Genre" },
 })
 
 SongSchema.virtual('url').get(function () {
