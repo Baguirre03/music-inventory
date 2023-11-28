@@ -1,6 +1,19 @@
-const song = require('../models/song.js')
+const Song = require('../models/song.js')
+const 
 const asyncHandler = require('express-async-handler')
 const { body, validationResult } = require('express-validator')
+
+exports.index = asyncHandler( async(req, res, next) => {
+    const [
+        numSongs,
+        numArtists,
+        numGenres
+    ] = await Promise.all([
+        Song.countDocuments({}).exec(),
+        Author.countDocuments({}).exec(),
+        Genre.countDocuments({}).exec(),
+    ])
+})
 
 exports.song_list = asyncHandler()
 

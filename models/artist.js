@@ -3,8 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const ArtistSchema = new Schema({
-    artist: { type: String, required: true },
-    title: { type: String },
+    name: { type: String, required: true },
 })
 
 ArtistSchema.virtual('url').get(function () {
