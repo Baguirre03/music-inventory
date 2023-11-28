@@ -1,5 +1,7 @@
-const Song = require('../models/song.js')
 const asyncHandler = require('express-async-handler')
+const Song = require('../models/song.js')
+const Artist = require('../models/artist.js')
+const Genre = require('../models/genre.js')
 const { body, validationResult } = require('express-validator')
 
 exports.index = asyncHandler(async (req, res, next) => {
@@ -9,24 +11,47 @@ exports.index = asyncHandler(async (req, res, next) => {
         numGenres
     ] = await Promise.all([
         Song.countDocuments({}).exec(),
-        Author.countDocuments({}).exec(),
+        Artist.countDocuments({}).exec(),
         Genre.countDocuments({}).exec(),
     ])
+
+    res.render('index', {
+        title: "Music Inventory Home",
+        song_count: numSongs,
+        artist_count: numArtists,
+        genre_count: numGenres,
+    })
+    return
 })
 
-exports.song_list = asyncHandler()
+exports.song_list = asyncHandler(async (req, res, next) => {
+    res.send('not yet implemented')
+})
 
-exports.song_detail = asyncHandler()
+exports.song_detail = asyncHandler(async (req, res, next) => {
+    res.send('not yet implemented')
+})
 
-exports.song_create_get = asyncHandler()
+exports.song_create_get = asyncHandler(async (req, res, next) => {
+    res.send('not yet implemented')
+})
 
-exports.song_create_post = asyncHandler()
+exports.song_create_post = asyncHandler(async (req, res, next) => {
+    res.send('not yet implemented')
+})
 
-exports.song_delete_get = asyncHandler()
+exports.song_delete_get = asyncHandler(async (req, res, next) => {
+    res.send('not yet implemented')
+})
 
-exports.song_delete_post = asyncHandler()
+exports.song_delete_post = asyncHandler(async (req, res, next) => {
+    res.send('not yet implemented')
+})
 
-exports.song_update_get = asyncHandler()
+exports.song_update_get = asyncHandler(async (req, res, next) => {
+    res.send('not yet implemented')
+})
 
-exports.song_update_post = asyncHandler()
-v
+exports.song_update_post = asyncHandler(async (req, res, next) => {
+    res.send('not yet implemented')
+})
