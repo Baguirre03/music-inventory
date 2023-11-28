@@ -1,9 +1,13 @@
-const genre = require('../models/genre.js')
+const Genre = require('../models/genre.js')
 const asyncHandler = require('express-async-handler')
 const { body, validationResult } = require('express-validator')
 
 exports.genre_list = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
+    const allGenres = await Genre.find().sort({ name: 1 }).exec()
+    res.render('genres', {
+        title: "Genre List",
+        genre_list: allGenres
+    })
 })
 
 exports.genre_detail = asyncHandler(async (req, res, next) => {

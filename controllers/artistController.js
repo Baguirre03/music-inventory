@@ -1,36 +1,41 @@
-const artist = require('../models/artist.js')
+const Artist = require('../models/artist.js')
 const asyncHandler = require('express-async-handler')
 const { body, validationResult } = require('express-validator')
 
 exports.artist_list = asyncHandler(async (req, res, next) => {
-    // not yet implemented
+    const allArtists = await Artist.find().sort({ name: 1 }).exec()
+    res.render('artists', {
+        title: "Artists List",
+        artist_list: allArtists
+    })
 })
 
 exports.artist_detail = asyncHandler(async (req, res, next) => {
+    res.send('not yet implemented')
     // not yet implemented
 })
 
 exports.artist_create_get = asyncHandler(async (req, res, next) => {
-    // not yet implemented
+    res.send('not yet implemented')
 })
 
 exports.artist_create_post = asyncHandler(async (req, res, next) => {
-    // not yet implemented
+    res.send('not yet implemented')
 })
 
 exports.artist_delete_get = asyncHandler(async (req, res, next) => {
-    // not yet implemented
+    res.send('not yet implemented')
 })
 
 exports.artist_delete_post = asyncHandler(async (req, res, next) => {
-    // not yet implemented
+    res.send('not yet implemented')
 })
 
 exports.artist_update_get = asyncHandler(async (req, res, next) => {
-    // not yet implemented
+    res.send('not yet implemented')
 })
 
 exports.artist_update_post = asyncHandler(async (req, res, next) => {
-    // not yet implemented
+    res.send('not yet implemented')
 })
 

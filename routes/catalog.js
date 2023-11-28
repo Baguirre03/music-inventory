@@ -18,7 +18,7 @@ router.get('/', song_controller.index)
 // router.post('/song/:id/update', song_controller.song_update_post)
 
 // router.get('/song/:id', song_controller.song_detail)
-// router.get('/songs', song_controller.song_list)
+router.get('/songs', song_controller.song_list)
 
 // // ARTISTS ROUTES
 // router.get('/artist/create', artist_controller.artist_create_get)
@@ -31,7 +31,7 @@ router.get('/', song_controller.index)
 // router.post('/artist/:id/update', artist_controller.artist_update_post)
 
 // router.get('/artist/:id', artist_controller.artist_detail)
-// router.get('/artists', artist_controller.artist_list)
+router.get('/artists', artist_controller.artist_list)
 
 // // GENRE ROUTES
 
@@ -45,6 +45,6 @@ router.get('/', song_controller.index)
 // router.post('/genre/:id/update', genre_controller.genre_update_get_post)
 
 // router.get('/genre/:id', genre_controller.genre_detail)
-// router.get('/genre', genre_controller.genre_list)
+router.get('/genres', genre_controller.genre_list)
 
 module.exports = router;
