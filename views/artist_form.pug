@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1=title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='artist_name') Artist:
+      input#artist.form-control(type='text' placeholder='Artists name' name='artist_name' required='true' value=(undefined===artist ? '' : author.name) )
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

@@ -51,7 +51,15 @@ exports.song_detail = asyncHandler(async (req, res, next) => {
 })
 
 exports.song_create_get = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
+    const [artists, genres] = await Promise.all([
+        Artist.find({}).populate('name').exec(),
+        Genre.find({}).populate('name').exec()
+    ])
+    res.render('song_form', {
+        title: "Create Song",
+        artists: artists,
+        genres: genres
+    })
 })
 
 exports.song_create_post = asyncHandler(async (req, res, next) => {

@@ -18,7 +18,7 @@ exports.artist_detail = asyncHandler(async (req, res, next) => {
     ])
     if (artist === null) {
         const err = new Error('Artist not found')
-        err.stats = 404
+        err.status = 404
         return next(err)
     }
 
@@ -30,7 +30,9 @@ exports.artist_detail = asyncHandler(async (req, res, next) => {
 })
 
 exports.artist_create_get = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
+    res.render('artist_form', {
+        title: "Create Artist"
+    })
 })
 
 exports.artist_create_post = asyncHandler(async (req, res, next) => {
