@@ -1,4 +1,5 @@
 const Artist = require('../models/artist.js')
+const Song = require('../models/song.js')
 const asyncHandler = require('express-async-handler')
 const { body, validationResult } = require('express-validator')
 
@@ -11,8 +12,21 @@ exports.artist_list = asyncHandler(async (req, res, next) => {
 })
 
 exports.artist_detail = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
-    // not yet implemented
+    const [artist, allSongsByArtist] = await Promise.all([
+        Artist.findById(req.params.id).exec(),
+        Song.find({ artist: req.params.id }).populate('name genre').exec()
+    ])
+    if (artist === null) {
+        const err = new Error('Artist not found')
+        err.stats = 404
+        return next(err)
+    }
+
+    res.render('artist_detail', {
+        title: "Artist detail",
+        artist: artist,
+        artist_songs: allSongsByArtist
+    })
 })
 
 exports.artist_create_get = asyncHandler(async (req, res, next) => {

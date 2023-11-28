@@ -37,7 +37,17 @@ exports.song_list = asyncHandler(async (req, res, next) => {
 })
 
 exports.song_detail = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
+    const song = await Song.findById(req.params.id).populate('artist').populate('genre').exec()
+
+    if (song === null) {
+        const err = new Error('Song not found')
+        err.status = 404
+        return next(err)
+    }
+    res.render('song_detail', {
+        title: "Song Detail",
+        song: song
+    })
 })
 
 exports.song_create_get = asyncHandler(async (req, res, next) => {
