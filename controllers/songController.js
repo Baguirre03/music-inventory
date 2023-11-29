@@ -161,7 +161,7 @@ exports.song_update_post = [
         .trim()
         .isLength({ min: 1 })
         .escape(),
-    body("artists", "Arist must not be empty.")
+    body("artist", "Artist must not be empty.")
         .trim()
         .isLength({ min: 1 })
         .escape(),
@@ -174,7 +174,7 @@ exports.song_update_post = [
         const errors = validationResult(req);
 
         const song = new Song({
-            name: req.body.title,
+            name: req.body.name,
             artist: req.body.artist,
             genre: req.body.genre,
             _id: req.params.id, // This is required, or a new ID will be assigned!
@@ -188,7 +188,7 @@ exports.song_update_post = [
 
             res.render("song_form", {
                 title: "Update Song",
-                authors: allArtist,
+                artists: allArtist,
                 genres: allGenres,
                 song: song,
                 errors: errors.array(),
@@ -198,4 +198,5 @@ exports.song_update_post = [
             const updatedSong = await Song.findByIdAndUpdate(req.params.id, song, {});
             res.redirect(updatedSong.url);
         }
-    }),]
+    })
+]

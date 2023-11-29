@@ -124,14 +124,14 @@ exports.artist_update_post = [
         const errors = validationResult(req);
 
         const artist = new Artist({
-            name: req.body.title,
+            name: req.body.artist_name,
             _id: req.params.id,
         });
 
         if (!errors.isEmpty()) {
             res.render("artist_form", {
                 title: "Update Artist",
-                genres: artist,
+                artist: artist,
                 errors: errors.array(),
             });
             return;

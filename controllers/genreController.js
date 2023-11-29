@@ -124,7 +124,7 @@ exports.genre_update_post = [
         const errors = validationResult(req);
 
         const genre = new Genre({
-            name: req.body.title,
+            name: req.body.genre_name,
             _id: req.params.id,
         });
 
@@ -136,7 +136,7 @@ exports.genre_update_post = [
             });
             return;
         } else {
-            const updateGenre = await Genre.findByIdAndUpdate(req.params.id, genre, {});
+            const updatedGenre = await Genre.findByIdAndUpdate(req.params.id, genre, {});
             res.redirect(updatedGenre.url);
         }
     })
