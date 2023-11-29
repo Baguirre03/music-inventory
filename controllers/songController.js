@@ -113,7 +113,7 @@ exports.song_create_post = [
 ]
 
 exports.song_delete_get = asyncHandler(async (req, res, next) => {
-    const song = Song.findById(req.params.id).exec()
+    const song = await Song.findById(req.params.id).exec()
     if (song === null) {
         res.redirect('/catalog/songs')
     } else {
@@ -125,7 +125,14 @@ exports.song_delete_get = asyncHandler(async (req, res, next) => {
 })
 
 exports.song_delete_post = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
+    const song = await Song.findById(req.params.id).exec()
+    if (!song) {
+        res.redirect('/catalog/songs')
+    } else {
+        console.log(req)
+        await Song.findByIdAndDelete(req.body.song_id)
+        res.redirect('/catalog/songs')
+    }
 })
 
 exports.song_update_get = asyncHandler(async (req, res, next) => {

@@ -82,7 +82,21 @@ exports.genre_delete_get = asyncHandler(async (req, res, next) => {
 })
 
 exports.genre_delete_post = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
+    const [genre, genreSongs] = await Promise.all([
+        Genre.findById(req.params.id).exec(),
+        Song.find({ genre: req.params.id }).populate('name').exec()
+    ])
+    if (genreSongs > 0) {
+        res.render('genre_delete', {
+            title: "Delete Genre",
+            genre: genre,
+            genre_songs: genreSongs
+        })
+        return
+    } else {
+        await Genre.findByIdAndDelete(req.body.genre_id)
+        res.redirect('/catalog/genres')
+    }
 })
 
 exports.genre_update_get = asyncHandler(async (req, res, next) => {
