@@ -62,9 +62,55 @@ exports.song_create_get = asyncHandler(async (req, res, next) => {
     })
 })
 
-exports.song_create_post = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
-})
+exports.song_create_post = [
+    body('name')
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage('Song name is required'),
+    body("artist")
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage('Artist is required'),
+    body('genre')
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage('Genre is required'),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req)
+        const song = new Song({
+            name: req.body.name,
+            artist: req.body.artist,
+            genre: req.body.genre
+        })
+
+        if (!errors.isEmpty()) {
+            const [allArtists, allGenres] = await Promise.all([
+                Artist.find().exec(),
+                Genre.find().exec(),
+            ]);
+
+            res.render('song_form', {
+                title: "Create Song",
+                artists: allArtists,
+                genres: allGenres,
+                song: song,
+                errors: errors.array(),
+            })
+        } else {
+            const songExists = await Song.findOne({ name: req.body.name }).collation({ locale: "en", strength: 1 }).exec()
+            if (songExists) {
+                res.redirect(songExists.url)
+            } else {
+                await song.save()
+                res.redirect(song.url)
+            }
+        }
+    })
+]
 
 exports.song_delete_get = asyncHandler(async (req, res, next) => {
     res.send('not yet implemented')

@@ -13,13 +13,13 @@ block content
         - artists.sort(function (a,b) { return a.name > b.name ? 1 : -1});
         for artist in artists
           if song
-            option(value=artist._id selected=(artist._id.toString()===song.author._id.toString() ? 'selected' : false) ) #{artist.name}
+            option(value=artist._id selected=(artist._id.toString()===song.artist._id.toString() ? 'selected' : false) ) #{artist.name}
           else
             option(value=artist._id) #{artist.name}
     div.form-group
       div
-        label(for='genres') Genre:
-        select#genres.form-control(type='select', placeholder='Select genres' name='genres' required='true' )
+        label(for='genre') Genre:
+        select#genres.form-control(type='select', placeholder='Select genres' name='genre' required='true' )
             for genre in genres
                 option(value=genre._id) #{genre.name}
     button.btn.btn-primary(type='submit') Submit

@@ -9,7 +9,7 @@ const song_controller = require('../controllers/songController')
 router.get('/', song_controller.index)
 
 router.get('/song/create', song_controller.song_create_get)
-// router.post('/song/create', song_controller.song_create_post)
+router.post('/song/create', song_controller.song_create_post)
 
 // router.get('/song/:id/delete', song_controller.song_delete_get)
 // router.post('/song/:id/delete', song_controller.song_delete_post)

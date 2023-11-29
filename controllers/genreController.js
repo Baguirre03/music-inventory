@@ -53,7 +53,7 @@ exports.genre_create_post = [
                 errors: errors.array()
             })
         } else {
-            const genreExists = await Genre.findOne({ name: req.body.genre_name }).collation({ locale: "en", strength: 2 }).exec();
+            const genreExists = await Genre.findOne({ name: req.body.genre_name }).collation({ locale: "en", strength: 1 }).exec();
             if (genreExists) {
                 res.redirect(genreExists.url)
             } else {

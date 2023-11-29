@@ -53,8 +53,13 @@ exports.artist_create_post = [
                 errors: errors.array()
             })
         } else {
-            await artist.save()
-            res.redirect(artist.url)
+            const artistExists = await Artist.findOne({ name: req.body.artist_name }).collation({ locale: "en", strength: 1 }).exec()
+            if (artistExists) {
+                res.redirect(artistExists.url)
+            } else {
+                await artist.save()
+                res.redirect(artist.url)
+            }
         }
     })
 ]
