@@ -113,7 +113,15 @@ exports.song_create_post = [
 ]
 
 exports.song_delete_get = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
+    const song = Song.findById(req.params.id).exec()
+    if (song === null) {
+        res.redirect('/catalog/songs')
+    } else {
+        res.render('song_delete', {
+            title: "Delete Song",
+            song: song
+        })
+    }
 })
 
 exports.song_delete_post = asyncHandler(async (req, res, next) => {

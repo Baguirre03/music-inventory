@@ -65,7 +65,20 @@ exports.artist_create_post = [
 ]
 
 exports.artist_delete_get = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
+    const [artist, allSongsByArtist] = await Promise.all([
+        Artist.findById(req.params.id).exec(),
+        Song.find({ artist: req.params.id }).populate('name').exec()
+    ])
+
+    if (artist === null) {
+        res.redirect('/catalog/artists')
+    } else {
+        res.render('artist_delete', {
+            title: "Delete Artist",
+            artist: artist,
+            artist_songs: allSongsByArtist
+        })
+    }
 })
 
 exports.artist_delete_post = asyncHandler(async (req, res, next) => {
