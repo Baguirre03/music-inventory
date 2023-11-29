@@ -92,20 +92,18 @@ exports.genre_delete_post = [
             Genre.findById(req.params.id).exec(),
             Song.find({ genre: req.params.id }).populate('name').exec()
         ])
+        const render = (err) => res.render('genre_delete', {
+            title: "Delete Genre",
+            genre: genre,
+            genre_songs: genreSongs,
+            errors: err ? errors.array() : ''
+        })
+
         if (!errors.isEmpty()) {
-            res.render("genre_delete", {
-                title: "Delete Song",
-                genre: genre,
-                genre_songs: genreSongs,
-                errors: errors.array(),
-            });
+            render(errors)
             return;
         } else if (genreSongs > 0) {
-            res.render('genre_delete', {
-                title: "Delete Genre",
-                genre: genre,
-                genre_songs: genreSongs
-            })
+            render(null)
             return
         } else {
             await Song.findByIdAndDelete(req.body.song_id)

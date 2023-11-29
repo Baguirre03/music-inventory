@@ -92,20 +92,19 @@ exports.artist_delete_post = [
             Artist.findById(req.params.id).exec(),
             Song.find({ artist: req.params.id }).populate('name').exec()
         ])
+
+        const render = (err) => res.render('artist_delete', {
+            title: "Delete Artist",
+            artist: artist,
+            artist_songs: artistSongs,
+            errors: err ? errors.array() : ''
+        })
+
         if (!errors.isEmpty()) {
-            res.render("artist_delete", {
-                title: "Delete Artist",
-                artist: artist,
-                artist_songs: artistSongs,
-                errors: errors.array(),
-            });
+            render(errors)
             return;
         } else if (artistSongs > 0) {
-            res.render('artist_delete', {
-                title: "Delete Artist",
-                artist: artist,
-                artist_songs: artistSongs
-            })
+            render(null)
             return
         } else {
             await Artist.findByIdAndDelete(req.body.artist_id)

@@ -131,6 +131,7 @@ exports.song_delete_post = [
 
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req)
+
         if (!errors.isEmpty()) {
             const song = await Song.findById(req.params.id).exec()
             res.render("song_delete", {
