@@ -100,7 +100,18 @@ exports.genre_delete_post = asyncHandler(async (req, res, next) => {
 })
 
 exports.genre_update_get = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
+    const genre = await Genre.findById(req.params.id).exec()
+
+    if (!genre) {
+        const err = new Error("Song not found");
+        err.status = 404;
+        return next(err);
+    }
+
+    res.render("genre_form", {
+        title: "Update Genre",
+        genre: genre,
+    })
 })
 
 exports.genre_update_post = asyncHandler(async (req, res, next) => {

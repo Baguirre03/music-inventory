@@ -136,7 +136,30 @@ exports.song_delete_post = asyncHandler(async (req, res, next) => {
 })
 
 exports.song_update_get = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
+    const [song, allArtists, allGenres] = await Promise.all([
+        Song.findById(req.params.id).populate("artist").populate("genre").exec(),
+        Artist.find().exec(),
+        Genre.find().exec(),
+    ]);
+
+    if (!song) {
+        const err = new Error("Song not found");
+        err.status = 404;
+        return next(err);
+    }
+
+    // for (const genre of allGenres) {
+    //     if (genre._id.toString() === song.genre._id.toString()) {
+    //         genre.checked = "true";
+    //     }
+    // }
+
+    res.render("song_form", {
+        title: "Update Book",
+        artists: allArtists,
+        genres: allGenres,
+        song: song,
+    })
 })
 
 exports.song_update_post = asyncHandler(async (req, res, next) => {

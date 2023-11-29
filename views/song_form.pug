@@ -6,7 +6,7 @@ block content
   form(method='POST' action='')
     div.form-group
       label(for='name') Name::
-      input#name.form-control(type='text', placeholder='Name of song' name='name' required='true' value=(undefined===name ? '' : song.name) )
+      input#name.form-control(type='text', placeholder='Name of song' name='name' required='true' value=(undefined === song.name ? '' : song.name) )
     div.form-group
       label(for='artist') Artist:
       select#artist.form-control(type='select', placeholder='Select artist' name='artist' required='true' )
@@ -22,7 +22,7 @@ block content
           - genres.sort(function (a,b) { return a.name > b.name ? 1 : -1});
           for genre in genres
             if song
-              option(value=genre._id selected=(genre._id.toString()===song.genre._id.toString() ? 'selected' : false) ) #{artist.name}
+              option(value=genre._id selected=(genre._id.toString()===song.genre._id.toString() ? 'selected' : false) ) #{genre.name}
             else
                 option(value=genre._id) #{genre.name}
     button.btn.btn-primary(type='submit') Submit
