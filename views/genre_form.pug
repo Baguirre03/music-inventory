@@ -6,7 +6,7 @@ block content
   form(method='POST' action='')
     div.form-group
       label(for='genre_name') Genre:
-      input#artist.form-control(type='text' placeholder='Genre name' name='genre_name' required='true' value=(undefined === genre.name ? '' : genre.name) )
+      input#artist.form-control(type='text' placeholder='Genre name' name='genre_name' required='true' value=(undefined === genre ? '' : genre.name) )
 
   if errors
     ul

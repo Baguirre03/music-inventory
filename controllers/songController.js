@@ -124,16 +124,28 @@ exports.song_delete_get = asyncHandler(async (req, res, next) => {
     }
 })
 
-exports.song_delete_post = asyncHandler(async (req, res, next) => {
-    const song = await Song.findById(req.params.id).exec()
-    if (!song) {
-        res.redirect('/catalog/songs')
-    } else {
-        console.log(req)
-        await Song.findByIdAndDelete(req.body.song_id)
-        res.redirect('/catalog/songs')
-    }
-})
+exports.song_delete_post = [
+    body('password')
+        .equals(process.env.password)
+        .withMessage('wrong password!'),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            const song = await Song.findById(req.params.id).exec()
+            res.render("song_delete", {
+                title: "Delete Song",
+                song: song,
+                errors: errors.array(),
+            });
+            return;
+        } else {
+            await Song.findByIdAndDelete(req.body.song_id)
+            res.redirect('/catalog/songs')
+        }
+    })
+]
+
 
 exports.song_update_get = asyncHandler(async (req, res, next) => {
     const [song, allArtists, allGenres] = await Promise.all([

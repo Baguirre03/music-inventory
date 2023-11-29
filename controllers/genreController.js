@@ -81,23 +81,39 @@ exports.genre_delete_get = asyncHandler(async (req, res, next) => {
     }
 })
 
-exports.genre_delete_post = asyncHandler(async (req, res, next) => {
-    const [genre, genreSongs] = await Promise.all([
-        Genre.findById(req.params.id).exec(),
-        Song.find({ genre: req.params.id }).populate('name').exec()
-    ])
-    if (genreSongs > 0) {
-        res.render('genre_delete', {
-            title: "Delete Genre",
-            genre: genre,
-            genre_songs: genreSongs
-        })
-        return
-    } else {
-        await Genre.findByIdAndDelete(req.body.genre_id)
-        res.redirect('/catalog/genres')
-    }
-})
+exports.genre_delete_post = [
+    body('password')
+        .equals(process.env.password)
+        .withMessage('wrong password!'),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req)
+        const [genre, genreSongs] = await Promise.all([
+            Genre.findById(req.params.id).exec(),
+            Song.find({ genre: req.params.id }).populate('name').exec()
+        ])
+        if (!errors.isEmpty()) {
+            res.render("genre_delete", {
+                title: "Delete Song",
+                genre: genre,
+                genre_songs: genreSongs,
+                errors: errors.array(),
+            });
+            return;
+        } else if (genreSongs > 0) {
+            res.render('genre_delete', {
+                title: "Delete Genre",
+                genre: genre,
+                genre_songs: genreSongs
+            })
+            return
+        } else {
+            await Song.findByIdAndDelete(req.body.song_id)
+            res.redirect('/catalog/songs')
+        }
+    })
+
+]
 
 exports.genre_update_get = asyncHandler(async (req, res, next) => {
     const genre = await Genre.findById(req.params.id).exec()

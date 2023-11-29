@@ -22,5 +22,11 @@ block content
     form(method='POST' action='')
       div.form-group
         input#genreid.form-control(type='hidden',name='genre_id', required='true', value=genre._id )
+        input#password.form-control(type='text', name='password', required='true', value='' placeholder='Enter Secret Password to Delete')
 
       button.btn.btn-primary(type='submit') Delete
+
+    if errors
+      ul
+        for error in errors
+          li!= error.msg

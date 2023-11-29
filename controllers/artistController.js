@@ -81,23 +81,38 @@ exports.artist_delete_get = asyncHandler(async (req, res, next) => {
     }
 })
 
-exports.artist_delete_post = asyncHandler(async (req, res, next) => {
-    const [artist, artistSongs] = await Promise.all([
-        Artist.findById(req.params.id).exec(),
-        Song.find({ artist: req.params.id }).populate('name').exec()
-    ])
-    if (artistSongs > 0) {
-        res.render('artist_delete', {
-            title: "Delete Artist",
-            artist: artist,
-            artist_songs: artistSongs
-        })
-        return
-    } else {
-        await Artist.findByIdAndDelete(req.body.artist_id)
-        res.redirect('/catalog/artists')
-    }
-})
+exports.artist_delete_post = [
+    body('password')
+        .equals(process.env.password)
+        .withMessage('wrong password!'),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req)
+        const [artist, artistSongs] = await Promise.all([
+            Artist.findById(req.params.id).exec(),
+            Song.find({ artist: req.params.id }).populate('name').exec()
+        ])
+        if (!errors.isEmpty()) {
+            res.render("artist_delete", {
+                title: "Delete Artist",
+                artist: artist,
+                artist_songs: artistSongs,
+                errors: errors.array(),
+            });
+            return;
+        } else if (artistSongs > 0) {
+            res.render('artist_delete', {
+                title: "Delete Artist",
+                artist: artist,
+                artist_songs: artistSongs
+            })
+            return
+        } else {
+            await Artist.findByIdAndDelete(req.body.artist_id)
+            res.redirect('/catalog/artists')
+        }
+    })
+]
 
 exports.artist_update_get = asyncHandler(async (req, res, next) => {
     const artist = await Artist.findById(req.params.id).exec()

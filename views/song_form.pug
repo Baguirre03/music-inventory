@@ -6,7 +6,7 @@ block content
   form(method='POST' action='')
     div.form-group
       label(for='name') Name::
-      input#name.form-control(type='text', placeholder='Name of song' name='name' required='true' value=(undefined === song.name ? '' : song.name) )
+      input#name.form-control(type='text', placeholder='Name of song' name='name' required='true' value=(undefined === song ? '' : song.name) )
     div.form-group
       label(for='artist') Artist:
       select#artist.form-control(type='select', placeholder='Select artist' name='artist' required='true' )
