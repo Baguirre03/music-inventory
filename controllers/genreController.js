@@ -114,6 +114,30 @@ exports.genre_update_get = asyncHandler(async (req, res, next) => {
     })
 })
 
-exports.genre_update_post = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
-})
+exports.genre_update_post = [
+    body("genre_name", "Name must not be empty.")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        const genre = new Genre({
+            name: req.body.title,
+            _id: req.params.id,
+        });
+
+        if (!errors.isEmpty()) {
+            res.render("genre_form", {
+                title: "Update Genre",
+                genres: genre,
+                errors: errors.array(),
+            });
+            return;
+        } else {
+            const updateGenre = await Genre.findByIdAndUpdate(req.params.id, genre, {});
+            res.redirect(updatedGenre.url);
+        }
+    })
+]

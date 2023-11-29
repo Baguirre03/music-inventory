@@ -114,7 +114,31 @@ exports.artist_update_get = asyncHandler(async (req, res, next) => {
     })
 })
 
-exports.artist_update_post = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
-})
+exports.artist_update_post = [
+    body("artist_name", "Name must not be empty.")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        const artist = new Artist({
+            name: req.body.title,
+            _id: req.params.id,
+        });
+
+        if (!errors.isEmpty()) {
+            res.render("artist_form", {
+                title: "Update Artist",
+                genres: artist,
+                errors: errors.array(),
+            });
+            return;
+        } else {
+            const updatedArtist = await Artist.findByIdAndUpdate(req.params.id, artist, {});
+            res.redirect(updatedArtist.url);
+        }
+    })
+]
 

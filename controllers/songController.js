@@ -148,12 +148,6 @@ exports.song_update_get = asyncHandler(async (req, res, next) => {
         return next(err);
     }
 
-    // for (const genre of allGenres) {
-    //     if (genre._id.toString() === song.genre._id.toString()) {
-    //         genre.checked = "true";
-    //     }
-    // }
-
     res.render("song_form", {
         title: "Update Book",
         artists: allArtists,
@@ -162,6 +156,46 @@ exports.song_update_get = asyncHandler(async (req, res, next) => {
     })
 })
 
-exports.song_update_post = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
-})
+exports.song_update_post = [
+    body("name", "Name must not be empty.")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+    body("artists", "Arist must not be empty.")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+    body("genre", "Genre must not be empty.")
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        const song = new Song({
+            name: req.body.title,
+            artist: req.body.artist,
+            genre: req.body.genre,
+            _id: req.params.id, // This is required, or a new ID will be assigned!
+        });
+
+        if (!errors.isEmpty()) {
+            const [allArtist, allGenres] = await Promise.all([
+                Artist.find().exec(),
+                Genre.find().exec(),
+            ]);
+
+            res.render("song_form", {
+                title: "Update Song",
+                authors: allArtist,
+                genres: allGenres,
+                song: song,
+                errors: errors.array(),
+            });
+            return;
+        } else {
+            const updatedSong = await Song.findByIdAndUpdate(req.params.id, song, {});
+            res.redirect(updatedSong.url);
+        }
+    }),]
