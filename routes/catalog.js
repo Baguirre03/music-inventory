@@ -22,7 +22,7 @@ router.get('/songs', song_controller.song_list)
 
 // // ARTISTS ROUTES
 router.get('/artist/create', artist_controller.artist_create_get)
-// router.post('/artist/create', artist_controller.artist_create_post)
+router.post('/artist/create', artist_controller.artist_create_post)
 
 // router.get('/artist/:id/delete', artist_controller.artist_delete_get)
 // router.post('/artist/:id/delete', artist_controller.artist_delete_post)
@@ -36,7 +36,7 @@ router.get('/artists', artist_controller.artist_list)
 // // GENRE ROUTES
 
 router.get('/genre/create', genre_controller.genre_create_get)
-// router.post('/genre/create', genre_controller.genre_create_post)
+router.post('/genre/create', genre_controller.genre_create_post)
 
 // router.get('/genre/:id/delete', genre_controller.genre_delete_get)
 // router.post('/genre/:id/delete', genre_controller.genre_delete_post)

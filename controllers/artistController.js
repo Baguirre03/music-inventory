@@ -35,9 +35,29 @@ exports.artist_create_get = asyncHandler(async (req, res, next) => {
     })
 })
 
-exports.artist_create_post = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
-})
+exports.artist_create_post = [
+    body("artist_name")
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage("Name is required"),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+        const artist = new Artist({ name: req.body.artist_name })
+
+        if (!errors.isEmpty()) {
+            res.render("artist_form", {
+                title: "Create Author",
+                artist: artist,
+                errors: errors.array()
+            })
+        } else {
+            await artist.save()
+            res.redirect(artist.url)
+        }
+    })
+]
 
 exports.artist_delete_get = asyncHandler(async (req, res, next) => {
     res.send('not yet implemented')

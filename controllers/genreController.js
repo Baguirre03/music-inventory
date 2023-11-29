@@ -35,9 +35,34 @@ exports.genre_create_get = asyncHandler(async (req, res, next) => {
     })
 })
 
-exports.genre_create_post = asyncHandler(async (req, res, next) => {
-    res.send('not yet implemented')
-})
+exports.genre_create_post = [
+    body('genre_name')
+        .trim()
+        .isLength({ min: 1 })
+        .escape()
+        .withMessage("Genre is required"),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req)
+        const genre = new Genre({ name: req.body.genre_name })
+
+        if (!errors.isEmpty()) {
+            res.render('genre_form', {
+                title: "Create Genre",
+                genre: genre,
+                errors: errors.array()
+            })
+        } else {
+            const genreExists = await Genre.findOne({ name: req.body.genre_name }).collation({ locale: "en", strength: 2 }).exec();
+            if (genreExists) {
+                res.redirect(genreExists.url)
+            } else {
+                await genre.save()
+                res.redirect(genre.url)
+            }
+        }
+    })
+]
 
 exports.genre_delete_get = asyncHandler(async (req, res, next) => {
     res.send('not yet implemented')
